@@ -4,6 +4,7 @@ import org.codeintelligence.processing.SpeedAnalyzer;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -96,14 +97,44 @@ public class SpeedAnalyzerTest {
     public void testSpeedLimitConverter_LongRunning() {
         int[] input = {0, 100, 200, 300, 400, 500};
         List<Integer> expectedOutput = Arrays.asList(0, 50);
-
-        long startTime = System.currentTimeMillis();
         List<Integer> result = underTest.speedLimitConverter(input);
-        long endTime = System.currentTimeMillis();
-        long elapsedTime = endTime - startTime;
 
-        // The test should take at least 10 seconds (10000 milliseconds).
-//        Assert.assertTrue("Test took less than 10 seconds", elapsedTime >= 10000);
+        Assert.assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void testSpeedLimitConverter_ZeroStepInput() {
+        int[] input = {10, 10, 10, 10};
+        List<Integer> expectedOutput = Arrays.asList(5);
+
+        List<Integer> result = underTest.speedLimitConverter(input);
+
+        Assert.assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void testSpeedLimitConverter_RepeatingPatternInput() {
+        int[] input = {5, 10, 15, 5, 10, 15};
+        List<Integer> expectedOutput = Arrays.asList(2);
+
+        List<Integer> result = underTest.speedLimitConverter(input);
+
+        Assert.assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void testSpeedLimitConverter_LargeInput() {
+        int[] input = new int[1000];
+        for (int i = 0; i < 1000; i++) {
+            input[i] = i * 10;
+        }
+        List<Integer> expectedOutput = new ArrayList<>();
+        expectedOutput.add(0);
+        expectedOutput.add(5);
+        expectedOutput.add(55);
+        expectedOutput.add(555);
+
+        List<Integer> result = underTest.speedLimitConverter(input);
 
         Assert.assertEquals(expectedOutput, result);
     }
