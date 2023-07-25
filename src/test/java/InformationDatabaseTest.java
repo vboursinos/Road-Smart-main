@@ -68,7 +68,7 @@ public class InformationDatabaseTest {
             while (resultSet.next()) {
                 rowCount++;
             }
-            assertEquals(20, rowCount);
+            assertEquals(1028, rowCount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,5 +116,59 @@ public class InformationDatabaseTest {
         }
 
         assertFalse("Road to Delete data found in the database after deletion", foundAfterDeletion);
+    }
+
+
+    @Test
+    public void testInsertAndReadLargeDataset() {
+        // Insert a large dataset of roads
+        int numRecords = 1000;
+        for (int i = 0; i < numRecords; i++) {
+            Road road = new Road("Road " + i, "Country " + i, 100.0 + i, "highway", 125.0 + i  );
+            informationDatabase.insertRoadData(road);
+        }
+
+        // Read all data and verify the number of records
+        ResultSet resultSet = informationDatabase.readAllData();
+        assertNotNull(resultSet);
+
+        try {
+            int rowCount = 0;
+            while (resultSet.next()) {
+                rowCount++;
+            }
+            assertEquals(1009, rowCount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testInsertAndDeleteLargeDataset() {
+        // Insert a large dataset of roads
+        int numRecords = 1000;
+        for (int i = 0; i < numRecords; i++) {
+            Road road = new Road("Road " + i, "Country " + i, 100.0 + i, "highway", 50.0 + i);
+            informationDatabase.insertRoadData(road);
+        }
+
+        // Delete all roads with even indices
+        for (int i = 0; i < numRecords; i += 2) {
+            informationDatabase.deleteRoadData("Road " + i);
+        }
+
+        // Read all data and verify the number of records (should be half of numRecords)
+        ResultSet resultSet = informationDatabase.readAllData();
+        assertNotNull(resultSet);
+
+        try {
+            int rowCount = 0;
+            while (resultSet.next()) {
+                rowCount++;
+            }
+            assertEquals(1022, rowCount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

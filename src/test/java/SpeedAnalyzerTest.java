@@ -3,6 +3,7 @@ import com.code_intelligence.jazzer.junit.FuzzTest;
 import org.codeintelligence.processing.SpeedAnalyzer;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,10 +16,10 @@ public class SpeedAnalyzerTest {
     private SpeedAnalyzer underTest = new SpeedAnalyzer();
 
     @Test
-    public void checkSizes(){
+    public void checkSizes() {
 
-        List expected = Arrays.asList(0,1,2);
-        List actual = underTest.speedLimitConverter(new int[]{0,1,2});
+        List expected = Arrays.asList(0, 1, 2);
+        List actual = underTest.speedLimitConverter(new int[]{0, 1, 2});
 
         Assert.assertEquals(expected.size(), actual.size());
     }
@@ -40,6 +41,7 @@ public class SpeedAnalyzerTest {
 
         Assert.assertEquals(expectedOutput, result);
     }
+
     @Test
     public void testSpeedLimitConverter_NegativeInput() {
 
@@ -137,5 +139,20 @@ public class SpeedAnalyzerTest {
         List<Integer> result = underTest.speedLimitConverter(input);
 
         Assert.assertEquals(expectedOutput, result);
+    }
+
+    @Test
+    public void testSpeedLimitConverterInMiles() {
+        SpeedAnalyzer speedAnalyzer = new SpeedAnalyzer();
+        int[] input = {60, 70, 80, 90, 100};
+        List<Double> expectedOutput = Arrays.asList(37.2826, 43.4957, 49.7088, 55.9219, 62.135);
+
+        List<Double> actualOutput = speedAnalyzer.speedLimitConverterInMiles(input);
+        // We need to use a custom epsilon for double comparison due to potential floating-point inaccuracies
+        double epsilon = 0.0001;
+
+        double actualValue = actualOutput.get(0);
+        Assertions.assertEquals(37.28226, actualValue, epsilon);
+
     }
 }
