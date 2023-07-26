@@ -27,6 +27,10 @@ public class DataOutput {
         this.db = db;
     }
 
+    public DataOutput() {
+
+    }
+
     public void toConsole() {
         try {
             ResultSet resultSet = db.readAllData();

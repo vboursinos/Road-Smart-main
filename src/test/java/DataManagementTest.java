@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +40,7 @@ public class DataManagementTest {
             List<Road> longestRoads = dataManagement.findTop10LongestRoadsFromFile(TEST_INPUT_FILE_PATH, 10);
             System.out.println(longestRoads);
             Assert.assertTrue(longestRoads.size() == 10);
+            new File(TEST_INPUT_FILE_PATH).delete();
         } catch (IOException e) {
             e.printStackTrace();
         }

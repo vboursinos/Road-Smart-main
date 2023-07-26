@@ -3,7 +3,10 @@ package org.codeintelligence.cli;
 import org.codeintelligence.database.InformationDatabase;
 import org.codeintelligence.models.Road;
 import org.codeintelligence.processing.DataOutput;
+import org.codeintelligence.utils.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class RoadSmartCLI {
@@ -34,9 +37,26 @@ public class RoadSmartCLI {
         this(new InformationDatabase());
     }
 
-    public static void main(String[] args){
-        RoadSmartCLI cli = new RoadSmartCLI();
-        cli.readOption();
+    public static void main(String[] args) throws IOException {
+        System.out.println("Starting RoadSmart CLI...");
+
+        // Start the timer
+        long startTime = System.currentTimeMillis();
+
+        String TEST_INPUT_FILE_PATH_FOR_XML = "roads.csv";
+        String TEST_OUTPUT_XML_FILE = "roads.xml";
+        FileUtils.generateTestInputFile(1000000, TEST_INPUT_FILE_PATH_FOR_XML);
+        DataOutput dataOutput = new DataOutput();
+        dataOutput.toXML(TEST_INPUT_FILE_PATH_FOR_XML, TEST_OUTPUT_XML_FILE);
+
+        // Stop the timer and calculate the elapsed time
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("Execution time: " + elapsedTime + " milliseconds");
+
+        System.out.println("Generated test input file");
+        new File(TEST_INPUT_FILE_PATH_FOR_XML).deleteOnExit();
+        new File(TEST_OUTPUT_XML_FILE).deleteOnExit();
     }
 
     public void runCLI(){

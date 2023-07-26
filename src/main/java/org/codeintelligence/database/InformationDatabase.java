@@ -41,7 +41,6 @@ public class InformationDatabase {
         String speedLimit = processor.computeSpeedLimit().toString();
 
         try {
-            System.out.println((String.format("Inserting Road '%s' into database", road.getName())));
             String query = String.format("INSERT INTO roads (name, country, length, speedLimit) VALUES ('%s', '%s', '%s', '%s')", road.getName(), road.getCountry(), length, speedLimit);
             return !conn.createStatement().execute(query);
         } catch (SQLException e){
