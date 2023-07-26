@@ -15,8 +15,6 @@ public class InformationDatabase {
     private Connection conn;
     private final String initialize = "CREATE TABLE IF NOT EXISTS roads (id IDENTITY PRIMARY KEY, name VARCHAR(50), country VARCHAR(50), length VARCHAR(10), speedLimit VARCHAR(10))";
 
-    private Logger log = LogManager.getLogger(InformationDatabase.class);
-
     public void connect()  {
         JdbcDataSource ds = new JdbcDataSource();
         ds.setURL("jdbc:h2:mem:database.db");
@@ -43,11 +41,11 @@ public class InformationDatabase {
         String speedLimit = processor.computeSpeedLimit().toString();
 
         try {
-            log.info(String.format("Inserting Road '%s' into database", road.getName()));
+            System.out.println((String.format("Inserting Road '%s' into database", road.getName())));
             String query = String.format("INSERT INTO roads (name, country, length, speedLimit) VALUES ('%s', '%s', '%s', '%s')", road.getName(), road.getCountry(), length, speedLimit);
             return !conn.createStatement().execute(query);
         } catch (SQLException e){
-            log.error(String.format("Error in inputting '%s' into database", road.getName()));
+            System.err.println(String.format("Error in inputting '%s' into database", road.getName()));
             e.printStackTrace();
             return false;
         }

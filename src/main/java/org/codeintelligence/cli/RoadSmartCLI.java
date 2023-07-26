@@ -34,6 +34,11 @@ public class RoadSmartCLI {
         this(new InformationDatabase());
     }
 
+    public static void main(String[] args){
+        RoadSmartCLI cli = new RoadSmartCLI();
+        cli.readOption();
+    }
+
     public void runCLI(){
         String input;
         scanner = new Scanner(System.in);

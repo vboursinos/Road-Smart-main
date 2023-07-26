@@ -42,6 +42,15 @@ public class Road {
         this.elevation = elevation;
     }
 
+    public Road(String name, String country, Double length, Integer speedLimit, String roadType, Double elevation) {
+        this.name = name;
+        this.country = country;
+        this.length = length;
+        this.speedLimit = speedLimit;
+        this.roadType = roadType;
+        this.elevation = elevation;
+    }
+
     private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
         name = (String) ois.readObject();
         country = (String) ois.readObject();
@@ -108,5 +117,17 @@ public class Road {
 
     public void setElevation(Double elevation) {
         this.elevation = elevation;
+    }
+
+    @Override
+    public String toString() {
+        return "Road{" +
+                "name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", length=" + length +
+                ", speedLimit=" + speedLimit +
+                ", roadType='" + roadType + '\'' +
+                ", elevation=" + elevation +
+                '}';
     }
 }
