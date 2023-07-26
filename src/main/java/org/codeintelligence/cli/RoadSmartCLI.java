@@ -7,7 +7,7 @@ import org.codeintelligence.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
 
 public class RoadSmartCLI {
 
@@ -45,10 +45,12 @@ public class RoadSmartCLI {
 
         String TEST_INPUT_FILE_PATH_FOR_XML = "roads.csv";
         String TEST_OUTPUT_XML_FILE = "roads.xml";
-        FileUtils.generateTestInputFile(1000000, TEST_INPUT_FILE_PATH_FOR_XML);
+        FileUtils.generateTestInputFile(100000, TEST_INPUT_FILE_PATH_FOR_XML);
         DataOutput dataOutput = new DataOutput();
         dataOutput.toXML(TEST_INPUT_FILE_PATH_FOR_XML, TEST_OUTPUT_XML_FILE);
-
+        List<Road> roads = FileUtils.getRoads(TEST_INPUT_FILE_PATH_FOR_XML);
+        List<Road> largestRoads = findLargerRoads(roads, 10);
+        System.out.println(largestRoads);
         // Stop the timer and calculate the elapsed time
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
@@ -57,6 +59,33 @@ public class RoadSmartCLI {
         System.out.println("Generated test input file");
         new File(TEST_INPUT_FILE_PATH_FOR_XML).deleteOnExit();
         new File(TEST_OUTPUT_XML_FILE).deleteOnExit();
+    }
+
+    private static List<Road> findLargerRoads(List<Road> roads, int numOfLongest) throws IOException {
+        System.out.println("Finding the " + numOfLongest + " longest roads...");
+        List<Road> largestRoads = new LinkedList<>();
+        Collections.sort(roads, Comparator.comparing(Road::getLength).reversed());
+
+        if (roads.size() >= numOfLongest) {
+            Road longestRoad = roads.get(0);
+            Road secondLongestRoad = roads.get(1);
+            System.out.println("The two longest roads are:");
+            System.out.println("1. " + longestRoad);
+            System.out.println("2. " + secondLongestRoad);
+        } else if (roads.size() == 1) {
+            Road longestRoad = roads.get(0);
+            System.out.println("There is only one road:");
+            System.out.println("1. " + longestRoad);
+        } else {
+            System.out.println("No roads found.");
+        }
+
+        for (int i = 0; i < numOfLongest; i++) {
+            largestRoads.add(roads.get(i));
+        }
+
+        System.out.println("Number of roads: " + largestRoads.size());
+        return largestRoads;
     }
 
     public void runCLI(){

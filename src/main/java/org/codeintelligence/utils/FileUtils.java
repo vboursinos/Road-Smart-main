@@ -1,8 +1,11 @@
 package org.codeintelligence.utils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.codeintelligence.models.Road;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class FileUtils {
@@ -22,6 +25,26 @@ public class FileUtils {
                 writer.newLine();
             }
         }
+    }
+
+    public static List<Road> getRoads(String inputFilePath) throws IOException {
+        List<Road> roadsList = new LinkedList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                String name = data[0].trim();
+                String country = data[1].trim();
+                Double length = Double.parseDouble(data[2].trim());
+                Integer speedLimit = Integer.parseInt(data[3].trim());
+                String roadType = data[4].trim();
+                Double elevation = Double.parseDouble(data[5].trim());
+
+                Road road = new Road(name, country, length, speedLimit, roadType, elevation);
+                roadsList.add(road);
+            }
+        }
+        return roadsList;
     }
 
 }
