@@ -45,7 +45,7 @@ public class RoadSmartCLI {
 
         String TEST_INPUT_FILE_PATH_FOR_XML = "roads.csv";
         String TEST_OUTPUT_XML_FILE = "roads.xml";
-        FileUtils.generateTestInputFile(100000, TEST_INPUT_FILE_PATH_FOR_XML);
+        FileUtils.generateTestInputFile(1000000, TEST_INPUT_FILE_PATH_FOR_XML);
         DataOutput dataOutput = new DataOutput();
         dataOutput.toXML(TEST_INPUT_FILE_PATH_FOR_XML, TEST_OUTPUT_XML_FILE);
         List<Road> roads = FileUtils.getRoads(TEST_INPUT_FILE_PATH_FOR_XML);
