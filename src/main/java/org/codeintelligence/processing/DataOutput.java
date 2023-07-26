@@ -1,5 +1,7 @@
 package org.codeintelligence.processing;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.codeintelligence.database.InformationDatabase;
 import org.codeintelligence.models.Road;
 import org.w3c.dom.Document;
@@ -161,6 +163,42 @@ public class DataOutput {
 
                 transformer.transform(source, result);
             } catch (ParserConfigurationException | TransformerException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void toJson(String inputFilePath, String outputFilePath) {
+        List<Road> roadsList = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                String name = data[0].trim();
+                String country = data[1].trim();
+                Double length = Double.parseDouble(data[2].trim());
+                Integer speedLimit = Integer.parseInt(data[3].trim());
+                String roadType = data[4].trim();
+                Double elevation = Double.parseDouble(data[5].trim());
+
+                Road road = new Road(name, country, length, speedLimit, roadType, elevation);
+                roadsList.add(road);
+            }
+
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+                String jsonString = objectMapper.writeValueAsString(roadsList);
+
+                // Write JSON string to file
+                try (FileWriter fileWriter = new FileWriter(outputFilePath)) {
+                    fileWriter.write(jsonString);
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         } catch (IOException e) {

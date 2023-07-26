@@ -26,6 +26,7 @@ public class DataOutputTest {
     private static final int NUM_ENTRIES = 2000000;
     private static final String TEST_INPUT_FILE_PATH_FOR_XML = "src/test/resources/testInputFileToXML.txt";
     private static final String TEST_OUTPUT_XML_FILE = "src/test/resources/testOutputFile.xml";
+    private static final String TEST_OUTPUT_JSON_FILE = "src/test/resources/testOutputFile.json";
 
     @Before
     public void setUp() throws SQLException {
@@ -79,11 +80,6 @@ public class DataOutputTest {
         generateTestInputFile();
         // Call the method
         dataOutput.toXML(TEST_INPUT_FILE_PATH_FOR_XML, TEST_OUTPUT_XML_FILE);
-
-        // Add assertions here to check if the XML file is generated as expected
-        // You can use an XML parser to read the generated file and validate its content
-        // For example, you can use libraries like JUnit XMLUnit.
-
         // Here, I'll just assert that readAllData was called once
         Assert.assertTrue(new File(TEST_OUTPUT_XML_FILE).exists());
         Assert.assertTrue(new File(TEST_OUTPUT_XML_FILE).length() > 0);
@@ -91,6 +87,18 @@ public class DataOutputTest {
         new File(TEST_OUTPUT_XML_FILE).delete();
     }
 
+    @Test
+    public void testFromTXTFileToJSON() throws IOException {
+        generateTestInputFile();
+        // Call the method
+        dataOutput.toJson(TEST_INPUT_FILE_PATH_FOR_XML, TEST_OUTPUT_JSON_FILE);
+
+        // Here, I'll just assert that readAllData was called once
+        Assert.assertTrue(new File(TEST_OUTPUT_JSON_FILE).exists());
+        Assert.assertTrue(new File(TEST_OUTPUT_JSON_FILE).length() > 0);
+        new File(TEST_INPUT_FILE_PATH_FOR_XML).delete();
+        new File(TEST_OUTPUT_JSON_FILE).delete();
+    }
     public void generateTestInputFile() throws IOException {
 
         Random random = new Random();
