@@ -5,14 +5,14 @@ import org.codeintelligence.models.Road;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class DataManagement {
     public List<Road> findTop10LongestRoadsFromFile(String filePath, int number0fLongest) throws IOException {
 
-        List<Road> roads = new ArrayList<>();
+        List<Road> roads = new LinkedList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
