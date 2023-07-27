@@ -27,7 +27,6 @@ public class RoadDataProcessor {
         double lengthMultiplier = 1.0; // A factor that varies based on road type
         double elevationMultiplier = 1.0; // A factor that varies based on elevation
 
-        // Adjust length multiplier based on road type
         switch (road.getRoadType().toLowerCase()) {
             case "highway":
                 lengthMultiplier = 1.2;
@@ -35,20 +34,17 @@ public class RoadDataProcessor {
             case "local":
                 lengthMultiplier = 0.8;
                 break;
-            // Add more cases for other road types as needed
             default:
                 lengthMultiplier = 1.0;
                 break;
         }
 
-        // Adjust length multiplier based on elevation
         if (road.getElevation() > 500.0) {
             elevationMultiplier = 1.3;
         } else if (road.getElevation() < 100.0) {
             elevationMultiplier = 0.8;
         }
 
-        // Calculate the final road length based on factors
         return String.valueOf(road.getLength() * lengthMultiplier * elevationMultiplier);
     }
 
@@ -108,7 +104,6 @@ public class RoadDataProcessor {
             String country = road.getCountry();
             double roadLength = Double.parseDouble(computeRoadLength(road));
 
-            // Categorize the road based on length thresholds
             String category;
             if (roadLength < 300.0) {
                 category = "Short";
@@ -118,14 +113,12 @@ public class RoadDataProcessor {
                 category = "Long";
             }
 
-            // Update the total length and road count for the category in the country's map
             resultsByCountry.putIfAbsent(country, new HashMap<>());
             Map<String, Double> countryResults = resultsByCountry.get(country);
             countryResults.put("TotalLength_" + category, countryResults.getOrDefault("TotalLength_" + category, 0.0) + roadLength);
             countryResults.put("RoadCount_" + category, countryResults.getOrDefault("RoadCount_" + category, 0.0) + 1.0);
         }
 
-        // Calculate the average length for each category in each country
         for (Map.Entry<String, Map<String, Double>> countryEntry : resultsByCountry.entrySet()) {
             Map<String, Double> countryResults = countryEntry.getValue();
             List<String> categories = Arrays.asList("Short", "Medium", "Long");

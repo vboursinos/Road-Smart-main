@@ -53,14 +53,12 @@ public class DataOutput {
 
             Document document = documentBuilder.newDocument();
 
-            // root element
             Element root = document.createElement("roads");
             document.appendChild(root);
 
             ResultSet resultSet = db.readAllData();
             Element roadEntry, name, country, length, speedLimit;
             while (resultSet.next()) {
-                // road elements
                 roadEntry = document.createElement("road");
                 root.appendChild(roadEntry);
 
@@ -194,7 +192,6 @@ public class DataOutput {
 
                 String jsonString = objectMapper.writeValueAsString(roadsList);
 
-                // Write JSON string to file
                 try (FileWriter fileWriter = new FileWriter(outputFilePath)) {
                     fileWriter.write(jsonString);
                 }
